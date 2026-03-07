@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oferta Educacional</title>
+  <meta name="description" content="Visualização da sua oferta educacional">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: #e2e8f0;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #0f172a;
+    }
+    .wrap {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+    .card-shell {
+      width: 100%;
+      border-radius: 45px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.28);
+    }
+    .hint {
+      width: 100%;
+      text-align: center;
+      font-size: 13px;
+      color: #334155;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+    .error {
+      width: 100%;
+      text-align: center;
+      padding: 16px;
+      border-radius: 12px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    @media (max-width: 480px) {
+      body { padding: 12px; }
+      .card-shell { border-radius: 28px; }
+      .hint { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="statusHint" class="hint">Carregando sua oferta...</div>
+    <div id="cardShell" class="card-shell"></div>
+  </div>
+
+  <script src="preview.js"></script>
+  <script src="offer.js"></script>
+</body>
+</html>

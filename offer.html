@@ -81,9 +81,9 @@
     }
     .wrap {
       width: 100%;
-      max-width: 760px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 8px 16px 34px;
+      padding: 8px 20px 34px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -120,6 +120,10 @@
       justify-content: center;
       align-items: flex-start;
     }
+    .card-shell > .gem-card {
+      max-width: 640px !important;
+      width: 100% !important;
+    }
     .cta-area {
       width: 100%;
       display: none;
@@ -148,6 +152,10 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 2px;
+      justify-content: flex-start;
+    }
+    .cta-buttons.single {
+      justify-content: center;
     }
     .portal-btn {
       display: inline-flex;
@@ -181,6 +189,7 @@
       .hero p { max-width: 95%; }
       .card-shell { border-radius: 28px; }
       .hint { font-size: 12px; }
+      .card-shell > .gem-card { max-width: 100% !important; }
       .cta-area h2 { font-size: 15px; }
       .portal-btn { width: 100%; }
     }

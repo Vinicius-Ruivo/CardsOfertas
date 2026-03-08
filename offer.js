@@ -72,6 +72,7 @@
     var hint = document.getElementById('statusHint');
     var ctaArea = document.getElementById('ctaArea');
     if (hint) hint.className = 'error';
+    if (hint) hint.style.display = 'block';
     if (hint) hint.textContent = msg;
     if (shell) shell.innerHTML = '';
     if (ctaArea) {
@@ -104,10 +105,11 @@
       return '<a class="portal-btn' + principal + '" href="' + link + '" target="_blank" rel="noopener noreferrer">' + label + '</a>';
     }).join('');
 
+    var classesBotoes = links.length === 1 ? 'cta-buttons single' : 'cta-buttons';
     ctaArea.innerHTML = ''
       + '<h2>Vamos garantir a sua vaga agora mesmo</h2>'
       + '<p>' + textoSuporte + '</p>'
-      + '<div class="cta-buttons">' + botoes + '</div>';
+      + '<div class="' + classesBotoes + '">' + botoes + '</div>';
     ctaArea.style.display = 'flex';
   }
 
@@ -169,9 +171,7 @@
     shell.innerHTML = window.GemCardPreview.renderizarPreview(data);
 
     var hint = document.getElementById('statusHint');
-    if (hint) {
-      hint.textContent = 'Oferta carregada com sucesso.';
-    }
+    if (hint) hint.style.display = 'none';
 
     if (data && data.curso) {
       document.title = 'Oferta - ' + data.curso;

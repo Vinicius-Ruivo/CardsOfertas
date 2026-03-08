@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardGem</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-top">
+        <h1> Gerador de Cards </h1>
+        <div class="header-actions">
+          <button id="avaliarBtn" type="button" class="btn btn-avaliar" aria-label="Avaliar extensão" title="Avaliar extensão">Avaliar</button>
+          <button id="duvidasBtn" type="button" class="btn btn-duvidas" aria-label="Abrir dúvidas" title="Abrir dúvidas">Dúvidas</button>
+          <button id="tutorialBtn" type="button" class="btn btn-tutorial" aria-label="Abrir tutorial" title="Abrir tutorial">?</button>
+        </div>
+      </div>
+    </header>
+
+    <form id="dataForm" class="form">
+      <section class="section" id="ofertaSection">
+        <h2>Dados da Oferta</h2>
+        <div class="field">
+          <textarea
+            id="dadosOferta"
+            rows="3"
+            placeholder="Cole os valores do PowerBI aqui "
+          ></textarea>
+        </div>
+      </section>
+
+      <section class="section section-row">
+        <div class="section-col" id="tipoBolsaSection">
+          <h2>Tipo de Bolsa</h2>  
+          <div class="field">
+            <label>
+              <input type="radio" name="condicao" value="triplo" checked>
+              Triplo Facilita
+            </label>
+          </div>
+          <div class="field">
+            <label>
+              <input type="radio" name="condicao" value="duplo">
+              Duplo Facilita
+            </label>
+          </div>
+          <div class="field">
+            <label>
+              <input type="radio" name="condicao" value="sem">
+              Sem Facilita
+            </label>
+          </div>
+          <div class="field">
+            <label>
+              <input type="radio" name="condicao" value="pravaler">
+              Pravaler
+            </label>
+          </div>
+          <div class="field bolsa-lider-row">
+            <label>
+              <input type="radio" name="condicao" value="lider">
+              Líder
+            </label>
+            <button
+              id="liderInfoBtn"
+              type="button"
+              class="btn-info-mini"
+              aria-label="Informações sobre bolsa Líder"
+              title="Informações sobre bolsa Líder"
+            >?</button>
+          </div>
+        </div>
+
+        <div class="section-col" id="timerSection">
+          <h2>Controle do Cronômetro</h2>
+          <div class="field">
+            <label>
+              <input type="radio" name="timerMode" id="timerRandom" value="random" checked>
+              Aleatório (1h a 5h)
+            </label>
+          </div>
+          <div class="field">
+            <label>
+              <input type="radio" name="timerMode" id="timerManual" value="manual">
+              Manual
+            </label>
+          </div>
+          <div id="manualTimerFields" class="field hidden">
+            <label>
+              <span style="display:block;margin-bottom:6px;">Duração manual</span>
+              <div style="display:flex;gap:8px;">
+                <input id="timerHours" type="number" min="0" max="24" value="3" placeholder="Horas">
+                <input id="timerMinutes" type="number" min="0" max="59" value="0" placeholder="Minutos">
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button id="gerarCardBtn" type="submit" class="btn btn-primary">Gerar Card</button>
+      </div>
+    </form>
+
+    <div id="erroMsg" class="erro-msg hidden"></div>
+
+    <section id="previewSection" class="preview-section hidden">
+      <div class="preview-header">
+        <h2>Seu Card está pronto!</h2>
+        <div class="preview-actions">
+          <button id="shareLinkBtn" class="btn btn-small">Gerar Link</button>
+          <button id="downloadBtn" class="btn btn-small">Baixar Card</button>
+        </div>
+      </div>
+      <div id="cardPreview" class="card-preview"></div>
+    </section>
+  </div>
+
+  <script src="parser.js"></script>
+  <script src="preview.js"></script>
+  <script src="generator.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

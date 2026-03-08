@@ -545,6 +545,112 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function abrirModalTourPadrao(options) {
+    if (document.querySelector('.tour-overlay') || document.querySelector('.tour-tooltip')) return null;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'tour-overlay';
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tour-tooltip tour-tooltip-center';
+    tooltip.innerHTML = options.html;
+
+    function close() {
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      if (tooltip.parentNode) tooltip.parentNode.removeChild(tooltip);
+    }
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(tooltip);
+    overlay.addEventListener('click', close);
+
+    return { overlay, tooltip, close };
+  }
+
+  function abrirModalMensagem(titulo, texto) {
+    const modal = abrirModalTourPadrao({
+      html: `
+        <p class="tour-step">Link da oferta</p>
+        <p class="tour-title">${titulo}</p>
+        <p class="tour-text">${texto}</p>
+        <div class="tour-controls">
+          <div class="tour-left"></div>
+          <div class="tour-right">
+            <button type="button" class="tour-btn tour-btn-primary" id="modalOkBtn">Entendi</button>
+          </div>
+        </div>
+      `
+    });
+    if (!modal) return;
+    const okBtn = modal.tooltip.querySelector('#modalOkBtn');
+    if (okBtn) okBtn.addEventListener('click', modal.close);
+  }
+
+  function abrirModalLinkManual(link) {
+    const modal = abrirModalTourPadrao({
+      html: `
+        <p class="tour-step">Copiar link manualmente</p>
+        <p class="tour-title">Não foi possível copiar automaticamente</p>
+        <p class="tour-text">Selecione e copie o link abaixo:</p>
+        <input id="manualLinkInput" class="tour-input" type="text" readonly>
+        <div class="tour-controls">
+          <div class="tour-left"></div>
+          <div class="tour-right">
+            <button type="button" class="tour-btn tour-btn-primary" id="manualLinkOkBtn">Entendi</button>
+          </div>
+        </div>
+      `
+    });
+    if (!modal) return;
+    const input = modal.tooltip.querySelector('#manualLinkInput');
+    if (input) {
+      input.value = link;
+      input.focus();
+      input.select();
+    }
+    const okBtn = modal.tooltip.querySelector('#manualLinkOkBtn');
+    if (okBtn) okBtn.addEventListener('click', modal.close);
+  }
+
+  function solicitarBaseUrl(onConfirm) {
+    const modal = abrirModalTourPadrao({
+      html: `
+        <p class="tour-step">Configuração inicial</p>
+        <p class="tour-title">URL pública do offer.html</p>
+        <p class="tour-text">Informe a URL pública para gerar links dos cards (ex.: https://seu-dominio.com/offer.html).</p>
+        <input id="shareBaseUrlInput" class="tour-input" type="text" placeholder="https://seu-dominio.com/offer.html">
+        <div class="tour-controls">
+          <div class="tour-left">
+            <button type="button" class="tour-btn" id="shareCancelBtn">Cancelar</button>
+          </div>
+          <div class="tour-right">
+            <button type="button" class="tour-btn tour-btn-primary" id="shareSaveBtn">Salvar</button>
+          </div>
+        </div>
+      `
+    });
+    if (!modal) return;
+
+    const input = modal.tooltip.querySelector('#shareBaseUrlInput');
+    const cancelBtn = modal.tooltip.querySelector('#shareCancelBtn');
+    const saveBtn = modal.tooltip.querySelector('#shareSaveBtn');
+    if (input) input.value = 'https://seu-dominio.com/offer.html';
+
+    if (cancelBtn) cancelBtn.addEventListener('click', modal.close);
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const base = normalizarBaseOfertaUrl(input ? input.value : '');
+        if (!base) {
+          abrirModalMensagem('URL inválida', 'Informe uma URL pública válida para continuar.');
+          return;
+        }
+        localStorage.setItem(SHARE_BASE_URL_KEY, base);
+        modal.close();
+        onConfirm(base);
+      });
+    }
+  }
+
   if (shareLinkBtn) {
     shareLinkBtn.addEventListener('click', async () => {
       if (!ultimoCardData) {
@@ -554,25 +660,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let baseUrl = localStorage.getItem(SHARE_BASE_URL_KEY) || '';
       if (!baseUrl) {
-        const informado = window.prompt(
-          'Informe a URL pública do arquivo offer.html (ex.: https://seu-dominio.com/offer.html):',
-          'https://seu-dominio.com/offer.html'
-        );
-        if (!informado) return;
-        baseUrl = normalizarBaseOfertaUrl(informado);
-        if (!baseUrl) {
-          mostrarErro('URL inválida. Informe uma URL pública válida.');
-          return;
-        }
-        localStorage.setItem(SHARE_BASE_URL_KEY, baseUrl);
+        solicitarBaseUrl(async (urlConfigurada) => {
+          const linkNovo = gerarLinkPublicoOferta(ultimoCardData, urlConfigurada);
+          try {
+            await navigator.clipboard.writeText(linkNovo);
+            abrirModalMensagem('Link copiado', 'O link da oferta foi copiado. Agora você pode colar no WhatsApp.');
+          } catch (e) {
+            abrirModalLinkManual(linkNovo);
+          }
+        });
+        return;
       }
 
       const link = gerarLinkPublicoOferta(ultimoCardData, baseUrl);
       try {
         await navigator.clipboard.writeText(link);
-        window.alert('Link da oferta copiado! Agora você pode colar no WhatsApp.');
+        abrirModalMensagem('Link copiado', 'O link da oferta foi copiado. Agora você pode colar no WhatsApp.');
       } catch (e) {
-        window.prompt('Copie o link da oferta:', link);
+        abrirModalLinkManual(link);
       }
     });
   }

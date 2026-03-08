@@ -517,3 +517,20 @@ input[type="radio"] {
   color: #1a1a1e;
   border-color: #d4af37;
 }
+
+.tour-input {
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 12px;
+}
+
+.tour-input:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Gerador De Cards",
-  "version": "4.0",
+  "version": "4.1",
   "description": "Me entregue apenas os dados do PowerBI e veja a mágica acontecer 🙃",
   "action": {
     "default_popup": "popup.html",
